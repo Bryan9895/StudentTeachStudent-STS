@@ -4,15 +4,14 @@ conexao = conectar()
 cursor = conexao.cursor()
 
 def buscar_aluno(matricula):
-    matricula = input("Digite a matrícula do aluno: ")
     cursor.execute("select * from alunos where matricula = %s", (matricula,))
     aluno = cursor.fetchone()
     if aluno:
         print(aluno)
     else:
         print("Aluno não encontrado.")
+
 def atualizar_aluno(matricula):
-    matricula = input("Digite a matrícula do aluno: ")
     cursor.execute("select * from alunos where matricula = %s", (matricula,))
     aluno = cursor.fetchone()
     if aluno:
@@ -24,7 +23,6 @@ def atualizar_aluno(matricula):
     else:
         print("Aluno não encontrado.")
 def remover_aluno(matricula):
-    matricula = input("Digite a matricula do aluno:")
     cursor.execute("select * from alunos where matricula = %s", (matricula,))
     conexao.commit()
     aluno = cursor.fetchone()
@@ -62,10 +60,10 @@ while True:
     print("\nMenu:")
     print("1. Listar alunos")
     print("2. Cadastrar aluno")
-    print("3. Sair")
-    print("4 - Atualizar aluno")
-    print("5 - Remover aluno")
-    print("6 - Buscar aluno")
+    print("3. Atualizar aluno")
+    print("4. Remover aluno")
+    print("5. Buscar aluno")
+    print("6. Sair")
     escolha = input("Escolha uma opção: ")
 
     if escolha == '1':
@@ -79,13 +77,24 @@ while True:
         else:
             cadastrar_aluno(nome, curso, matricula)
     elif escolha == '3':
+
+        nome = input("Digite o nome do aluno: ")
+        curso = input("Digite o curso do aluno: ")
+        matricula = input("Digite a matrícula do aluno: ")
+        if atualizar_aluno(matricula) == True:
+            print("Aluno atualizado com sucesso!")
+        else:
+            print("Aluno não encontrado. Tente novamente.")
+
+    elif escolha == '4':
+        matricula = input("Digite a matrícula do aluno: ")
+        remover_aluno(matricula)
+
+    elif escolha == '5':
+        buscar_aluno(matricula=input("Digite a matrícula do aluno: "))
+    elif escolha == '6':
+        print("Saindo do programa...")
         break
-    elif escolha == '4 - Atualizar aluno':
-        atualizar_aluno(cursor,conexao)
-    elif escolha == '5 - Remover aluno':
-        remover_aluno(cursor,conexao)
-    elif escolha == '6 - Buscar aluno':
-        buscar_aluno(cursor)
     else:
         print("Opção inválida. Tente novamente.")
 

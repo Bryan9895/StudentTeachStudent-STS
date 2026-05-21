@@ -15,3 +15,4 @@ INSERT INTO alunos (nome, curso, matricula) VALUES
     ("Suellen Quinteta", "Python, Informatica Basica", "20261321000056"),
     ("Nicolas Mateus", "Python, Informatica Basica, Manutenção de Computadores", "20261321000064"),
     ("Esther Tiburcio", "Python, Manutenção de Computadores, Front-end", "20261321000019");
+    

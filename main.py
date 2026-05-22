@@ -1,3 +1,4 @@
+import email
 from conexao import conectar
 
 conexao = conectar()
@@ -53,6 +54,33 @@ def cadastrar_aluno(nome, curso, matricula):
     conexao.commit()
     print("Aluno cadastrado com sucesso!")
 
+def aluno_github_existe(matricula):
+    sql = "SELECT GitHub FROM alunos WHERE matricula = %s"
+    cursor.execute(sql, (matricula,))
+    resultado = cursor.fetchone()
+    if resultado:
+        print(f"O GitHub do aluno é: {resultado}")
+    else:
+        print("Aluno não encontrado.")
+
+def procurar_email(matricula):
+    sql = "SELECT email FROM alunos WHERE matricula = %s"
+    cursor.execute(sql, (matricula,))
+    resultado = cursor.fetchone()
+    if resultado:
+        print(f"O email do aluno é: {resultado}")
+    else:
+        print("Aluno não encontrado.")
+
+def procurar_matricula(nome):
+    sql = "SELECT matricula FROM alunos WHERE nome = %s"
+    cursor.execute(sql, (nome,))
+    resultado = cursor.fetchone()
+    if resultado:
+        print(f"A matrícula do aluno é: {resultado}")
+    else:
+        print("Aluno não encontrado.")
+
 conexao = conectar()
 cursor = conexao.cursor()
 
@@ -63,7 +91,10 @@ while True:
     print("3. Atualizar aluno")
     print("4. Remover aluno")
     print("5. Buscar aluno")
-    print("6. Sair")
+    print("6. Procurar GitHub")
+    print("7. Procurar email")
+    print("8. Procurar matrícula")
+    print("x. Sair")
     escolha = input("Escolha uma opção: ")
 
     if escolha == '1':
@@ -71,15 +102,18 @@ while True:
     elif escolha == '2':
         nome = input("Digite o nome do aluno: ")
         curso = input("Digite o curso do aluno: ")
+        email = input("Digite o email do aluno: ")
+        github = input("Digite o GitHub do aluno: ")
         matricula = input("Digite a matrícula do aluno: ")
         if aluno_existe (matricula):
             print("Esse aluno já está cadastrado. Tente novamente.")
         else:
-            cadastrar_aluno(nome, curso, matricula)
+            cadastrar_aluno(nome, curso, matricula, email, github)
     elif escolha == '3':
-
         nome = input("Digite o nome do aluno: ")
         curso = input("Digite o curso do aluno: ")
+        email = input("Digite o email do aluno: ")
+        github = input("Digite o GitHub do aluno: ")
         matricula = input("Digite a matrícula do aluno: ")
         if atualizar_aluno(matricula) == True:
             print("Aluno atualizado com sucesso!")
@@ -89,10 +123,16 @@ while True:
     elif escolha == '4':
         matricula = input("Digite a matrícula do aluno: ")
         remover_aluno(matricula)
-
     elif escolha == '5':
         buscar_aluno(matricula=input("Digite a matrícula do aluno: "))
     elif escolha == '6':
+        aluno_github_existe(matricula=input("Digite a matrícula do aluno: "))
+    elif escolha == '7':
+        procurar_email(matricula=input("Digite a matrícula do aluno: "))
+    elif escolha == '8':
+       procurar_matricula(nome=input("Digite o nome do aluno: "))
+
+    elif escolha == 'x':
         print("Saindo do programa...")
         break
     else:

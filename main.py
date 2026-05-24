@@ -73,13 +73,23 @@ def procurar_email(matricula):
         print("Aluno não encontrado.")
 
 def procurar_matricula(nome):
-    sql = "SELECT matricula FROM alunos WHERE nome = %s"
+    sql = "SELECT matricula FROM alunos WHERE nome like %s"
     cursor.execute(sql, (nome,))
     resultado = cursor.fetchone()
     if resultado:
         print(f"A matrícula do aluno é: {resultado}")
     else:
         print("Aluno não encontrado.")
+
+def presenca(matricula, data, num_faltas):
+    if aluno_existe(matricula):
+        sql = "insert into presenca (matricula, data, num_faltas) values (%s, %s, %s)"
+        valores = [matricula, data, 0]
+        cursor.execute(sql, valores)
+        conexao.commit()
+        print("Presença adicionada com sucesso")
+    else:
+        print("Aluno não existe")
 
 conexao = conectar()
 cursor = conexao.cursor()
@@ -94,6 +104,7 @@ while True:
     print("6. Procurar GitHub")
     print("7. Procurar email")
     print("8. Procurar matrícula")
+    print("9. Adicionar falta")
     print("x. Sair")
     escolha = input("Escolha uma opção: ")
 
@@ -131,7 +142,13 @@ while True:
         procurar_email(matricula=input("Digite a matrícula do aluno: "))
     elif escolha == '8':
        procurar_matricula(nome=input("Digite o nome do aluno: "))
+    elif escolha == '9':
 
+        matricula = input("Digite a matrícula do aluno: ")
+        data = input("Digite a data da falta (YYYY-MM-DD): ")
+        faltas = int(input("Digite o número de faltas: "))
+        presenca(matricula, data, faltas)
+    
     elif escolha == 'x':
         print("Saindo do programa...")
         break
